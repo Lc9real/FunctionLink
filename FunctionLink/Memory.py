@@ -11,7 +11,7 @@ class Memory_System():
             if not os.path.exists(f"./Memory/{self.memory_key}/System/"):
                 os.makedirs(f"./Memory/{self.memory_key}/System/")
 
-        def add_Memory_Keys(self, keys: list[str], content:str):
+        def add_Memory_Keys(self, keys: list[str], content: str):
             name = ""
             for key in keys:
                 name += key + ", "
@@ -32,8 +32,7 @@ class Memory_System():
                         break
             return output
 
-
-        def add_Memory_Sytem(self):
+        def add_Memory_Sytem(self, path: str):
             pass
 
         def get_Memory_Sytem(self):
