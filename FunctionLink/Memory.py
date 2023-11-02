@@ -27,7 +27,7 @@ class Memory_System():
                 fileKeys = file[:-7]
                 keys = fileKeys.split(", ")
                 for key in keys:
-                    if key in keys:
+                    if key.lower() in content.lower():
                         output += f'\nKeys: {fileKeys}\nContent: {open(f"./Memory/{self.memory_key}/Key/{file}").read()}\n\n'
                         break
             return output
