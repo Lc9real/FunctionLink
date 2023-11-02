@@ -20,8 +20,18 @@ class Memory_System():
             file.write(content)
 
 
-        def get_Memory_Keys(self):
-            pass
+        def get_Memory_Keys(self, content:str):
+            files = os.listdir(f"./Memory/{self.memory_key}/Key/")
+            output:str = ""
+            for file in files:
+                fileKeys = file[:-7]
+                keys = fileKeys.split(", ")
+                for key in keys:
+                    if key in keys:
+                        output += f'\nKeys: {fileKeys}\nContent: {open(f"./Memory/{self.memory_key}/Key/{file}").read()}\n\n'
+                        break
+            return output
+
 
         def add_Memory_Sytem(self):
             pass
