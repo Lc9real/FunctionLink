@@ -28,15 +28,27 @@ class Memory_System():
                 keys = fileKeys.split(", ")
                 for key in keys:
                     if key.lower() in content.lower():
-                        output += f'\nKeys: {fileKeys}\nContent: {open(f"./Memory/{self.memory_key}/Key/{file}").read()}\n\n'
+                        f = open(f"./Memory/{self.memory_key}/Key/{file}")
+                        output += f'\nKeys: {fileKeys}\nContent: {f.read()}\n\n'
+                        f.close()
                         break
             return output
 
-        def add_Memory_Sytem(self, path: str):
-            pass
+        def add_Memory_Sytem(self, path: str, name: str, content: str):
+            if not os.path.exists(f"./Memory/{self.memory_key}/System/{path}/"):
+                os.makedirs(f"./Memory/{self.memory_key}/System/{path}/")
+            f = open(f"./Memory/{self.memory_key}/System/{path}/{name}.memory", "w")
+            f.write(content)
+            f.close()
 
-        def get_Memory_Sytem(self):
-            pass
+        def get_Memory_Sytem(self, path: str, filename: str=""):
+            if filename:
+                return f"{path}{filename}:\n" + open(f"./Memory/{self.memory_key}/System/{path}/{filename}.memory", "r").read()
+            dir = os.walk(f"./Memory/{self.memory_key}/System/{path}")
+            nextdir = next(dir)
+            tempDir = {"Folders": nextdir[1], "Files": nextdir[2]}
+
+            return tempDir
 
 
         def clear_Memory(self):
