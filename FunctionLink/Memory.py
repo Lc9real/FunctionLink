@@ -50,7 +50,14 @@ class Memory_System():
 
             return tempDir
 
+        def add_Memory_shortTerm(self, content: str):
+            f = open(f"./Memory/{self.memory_key}/{self.memory_key}.memory", "a")
+            f.write(content + "\n")
+            f.close()
 
+        def get_Memory_shortTerm(self):
+            f = open(f"./Memory/{self.memory_key}/{self.memory_key}.memory", "r")
+            return f.read()
         def clear_Memory(self):
             os.remove(f"./Memory/{self.memory_key}")
             os.makedirs(f"./Memory/{self.memory_key}")
