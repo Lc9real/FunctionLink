@@ -19,7 +19,6 @@ class Memory_System():
             file = open(f"./Memory/{self.memory_key}/Key/{name}.memory", "w")
             file.write(content)
 
-
         def get_Memory_Keys(self, content:str):
             files = os.listdir(f"./Memory/{self.memory_key}/Key/")
             output:str = ""
@@ -58,17 +57,14 @@ class Memory_System():
         def get_Memory_shortTerm(self):
             f = open(f"./Memory/{self.memory_key}/{self.memory_key}.memory", "r")
             return f.read()
+
+        def add_summary(self, content: str):
+            f = open(f"./Memory/{self.memory_key}/{self.memory_key}.memory", "w")
+            f.write(content + "\n")
+            f.close()
+
         def clear_Memory(self):
             os.remove(f"./Memory/{self.memory_key}")
             os.makedirs(f"./Memory/{self.memory_key}")
             os.makedirs(f"./Memory/{self.memory_key}/Key/")
             os.makedirs(f"./Memory/{self.memory_key}/System/")
-
-
-
-
-
-
-
-
-
