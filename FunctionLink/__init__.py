@@ -1,10 +1,13 @@
+import asyncio
+
 from llama_cpp import Llama
 
 class LinkContainer():
-    def __init__(self, Name: str, Description: str, func: callable,):
-        self.Name = Name
-        self.Description = Description
+    def __init__(self, name: str, description: str, func: callable, coroutine: bool=False):
+        self.Name = name
+        self.Description = description
         self.func = func
+        self.coroutine = coroutine
 
 class Link():
     def __init__(self, llm: Llama, tools: list[LinkContainer]):
@@ -20,6 +23,7 @@ class Link():
             inputForFunc = ""
             funcName = ""
             responseNcommand = ""
+            iscoroutine = False
             for token in self.llm.generate(inputToken, top_k=40, top_p=0.95, temp=tempreture, repeat_penalty=1.1, reset=True):
                 outputToken.append(token)
                 if len(outputToken) >= 2:
@@ -34,7 +38,10 @@ class Link():
                     if commandConditions[1]:
                         if commandConditions[2]:
                             if ")" in currentTokenstr:
-                                Output = Commandfunc(inputForFunc)
+                                if iscoroutine:
+                                    Output = asyncio.run(Commandfunc(inputForFunc))
+                                else:
+                                    Output = Commandfunc(inputForFunc)
                                 input_ = self.llm.detokenize(outputToken).decode("utf-8") + " Output: '" + Output + "'"
                                 prom = prompt + input_
                                 gen = generate(prom, tempreture, stop)
@@ -51,6 +58,7 @@ class Link():
                         for element in self.tools:
                             if element.Name in funcName:
                                 Commandfunc = element.func
+                                iscoroutine = element.coroutine
                                 commandConditions[1] = True
                                 break
                 elif "/" in currentTokenstr:
