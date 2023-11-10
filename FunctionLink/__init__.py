@@ -13,8 +13,8 @@ class Link():
     def __init__(self, llm: Llama, tools: list[LinkContainer]):
         self.llm = llm
         self.tools = tools
-    def __call__(self, prompt: str, tempreture=0, stop: list[str]=["\n\n", ";"],) -> dict[str: str]:
-        def generate(prompt: str, tempreture, stop) -> dict[str: str]:
+    def __call__(self, prompt: str, tempreture: float=0, stop: list[str]=["\n\n", ";"], stream: bool=False) -> dict[str: str]:
+        def generate(prompt: str, tempreture, stop, stream: bool) -> dict[str: str]:
             allDic = {"Full": "", "Response": "", "Reason": ""}
             inputToken = self.llm.tokenize(prompt.encode('utf-8'))
             commandConditions = [False, False, False]
@@ -33,6 +33,8 @@ class Link():
                         allDic["Reason"] = "Nyet"
                         return allDic
                 currentTokenstr: str = self.llm.detokenize([token]).decode("utf-8")
+                if stream:
+                    print(currentTokenstr, end='')
                 text = self.llm.detokenize(outputToken).decode("utf-8")
                 if commandConditions[0]:
                     if commandConditions[1]:
@@ -44,7 +46,7 @@ class Link():
                                     Output = Commandfunc(inputForFunc)
                                 input_ = self.llm.detokenize(outputToken).decode("utf-8") + " Output: '" + Output + "'"
                                 prom = prompt + input_
-                                gen = generate(prom, tempreture, stop)
+                                gen = generate(prom, tempreture, stop, stream)
                                 allDic["Reason"] = gen["Reason"]
                                 allDic["Response"] = responseNcommand + gen["Response"]
                                 allDic["Full"] = input_ + gen["Full"]
@@ -74,4 +76,8 @@ class Link():
                 allDic["Full"] += currentTokenstr
                 allDic["Response"] = responseNcommand
             return allDic
-        return generate(prompt, tempreture, stop)
+
+        generated = generate(prompt, tempreture, stop, stream)
+        if stream:
+            print("")
+        return generated

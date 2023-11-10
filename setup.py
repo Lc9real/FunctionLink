@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='FunctionLink',
-      version='0.4',
+      version='0.7',
       description='Combine Python Functions and AI',
       url='http://github.com/lc9real',
       author='Lc9',

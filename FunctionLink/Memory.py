@@ -10,6 +10,8 @@ class Memory_System():
                 os.makedirs(f"./Memory/{self.memory_key}/Key/")
             if not os.path.exists(f"./Memory/{self.memory_key}/System/"):
                 os.makedirs(f"./Memory/{self.memory_key}/System/")
+            if not os.path.exists(f"./Memory/{self.memory_key}/{self.memory_key}.memory"):
+                open(f"./Memory/{self.memory_key}/{self.memory_key}.memory", "w").close()
 
         def add_Memory_Keys(self, keys: list[str], content: str):
             name = ""
