@@ -39,7 +39,7 @@ class Link():
                 if commandConditions[0]:
                     if commandConditions[1]:
                         if commandConditions[2]:
-                            if ")" in currentTokenstr:
+                            if ")" in currentTokenstr and (text.count('(') == text.count(')')):
                                 if iscoroutine:
                                     Output = asyncio.run(Commandfunc(inputForFunc))
                                 else:
