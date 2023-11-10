@@ -39,20 +39,21 @@ class Link():
                 if commandConditions[0]:
                     if commandConditions[1]:
                         if commandConditions[2]:
-                            if ")" in currentTokenstr and (text.count('(') == text.count(')')):
-                                if iscoroutine:
-                                    Output = asyncio.run(Commandfunc(inputForFunc))
-                                else:
-                                    Output = Commandfunc(inputForFunc)
-                                input_ = self.llm.detokenize(outputToken).decode("utf-8") + " Output: '" + Output + "'"
-                                prom = prompt + input_
-                                gen = generate(prom, tempreture, stop, stream)
-                                allDic["Reason"] = gen["Reason"]
-                                allDic["Response"] = responseNcommand + gen["Response"]
-                                allDic["Full"] = input_ + gen["Full"]
-                                return allDic
-                            else:
-                                inputForFunc += currentTokenstr
+                            inputForFunc += currentTokenstr
+                            if ")" in currentTokenstr:
+                                if text.count('(') == text.count(')'):
+                                    inputForFunc = inputForFunc[:-1]
+                                    if iscoroutine:
+                                        Output = asyncio.run(Commandfunc(inputForFunc))
+                                    else:
+                                        Output = Commandfunc(inputForFunc)
+                                    input_ = self.llm.detokenize(outputToken).decode("utf-8") + " Output: '" + Output + "'"
+                                    prom = prompt + input_
+                                    gen = generate(prom, tempreture, stop, stream)
+                                    allDic["Reason"] = gen["Reason"]
+                                    allDic["Response"] = responseNcommand + gen["Response"]
+                                    allDic["Full"] = input_ + gen["Full"]
+                                    return allDic
                         elif "(" in currentTokenstr:
                             commandConditions[2] = True
                     else:
