@@ -42,7 +42,7 @@ class Link():
                             inputForFunc += currentTokenstr
                             if ")" in currentTokenstr:
                                 if text.count('(') == text.count(')'):
-                                    inputForFunc = inputForFunc[:-1]
+                                    inputForFunc = inputForFunc[0:inputForFunc.rfind(')')]
                                     if iscoroutine:
                                         Output = asyncio.run(Commandfunc(inputForFunc))
                                     else:
